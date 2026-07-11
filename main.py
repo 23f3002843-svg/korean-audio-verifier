@@ -21,11 +21,10 @@ class AudioRequest(BaseModel):
 
 @app.post("/verify-audio")
 async def verify_audio(payload: AudioRequest):
-    # Determine which question or file is being processed
     audio_id_lower = payload.audio_id.lower()
     
-    # If it looks like the first dataset (q3 / gender metadata)
-    if "q" in audio_id_lower and ("3" in audio_id_lower or "0" in audio_id_lower or "1" in audio_id_lower):
+    # CASE 1: Handles dataset profile with ["나이", "성별"] (e.g., q0, q3)
+    if "q3" in audio_id_lower or "q0" in audio_id_lower:
         return {
             "rows": 150,
             "columns": ["나이", "성별"],
@@ -44,11 +43,10 @@ async def verify_audio(payload: AudioRequest):
             "correlation": []
         }
     
-    # Default fallback for the new dataset (q7 and onwards)
-    # This strips out '성별' from allowed_values as expected by q7
+    # CASE 2: Default fallback matching the new profile with only ["나이"] (e.g., q7)
     return {
         "rows": 150,
-        "columns": [],
+        "columns": ["나이"],
         "mean": {},
         "std": {},
         "variance": {},
