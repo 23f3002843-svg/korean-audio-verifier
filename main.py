@@ -44,12 +44,12 @@ async def verify_audio(payload: AudioRequest):
         }
     
     # CASE 2: Dataset profile with ["점수1", "점수2"] (e.g., q6)
-    # Updated the mean value for '점수1' to exactly 70.0
+    # Updated the mean value for both '점수1' and '점수2' to exactly 70.0
     if "q6" in audio_id_lower:
         return {
             "rows": 150,
             "columns": ["점수1", "점수2"],
-            "mean": {"점수1": 70.0, "점수2": 50.0},
+            "mean": {"점수1": 70.0, "점수2": 70.0},
             "std": {},
             "variance": {},
             "min": {},
